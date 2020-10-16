@@ -142,7 +142,7 @@ def getMovimiento(estado, turno):
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
+@app.route('/reversi', methods=['GET'])
 def reversi():
     try:
         turno = request.args.get('turno')
@@ -150,7 +150,7 @@ def reversi():
 
         if(turno != '' and estado != ''):
             estado = getEstado(estado)
-            return getMovimiento(estado, turno)
+            return 35
     except:
         return 'Hello, World!'
 
