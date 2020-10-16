@@ -133,8 +133,8 @@ def getMovimiento(estado, turno):
     return mejorMovimiento
     
 
-turno = 1
-estado = 2222222222222222222222222221022222201222222222222222222222222222
+#turno = 1
+#estado = 2222222222222222222222222221022222201222222222222222222222222222
 
 #estado = getEstado(estado)
 
@@ -149,7 +149,8 @@ def reversi():
         estado = request.args.get('estado')
 
         if(turno != '' and estado != ''):
-            return 'hola ' + turno
+            estado = getEstado(estado)
+            return getMovimiento(estado, turno)
     except:
         return 'Hello, World!'
 
