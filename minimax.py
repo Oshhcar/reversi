@@ -128,7 +128,7 @@ def getMovimiento(estado, turno):
         hacerMovimiento(copiaEstado, turno, x, y)
         valor = getValorEstado(estado, turno)
         if(valor > mejorValor):
-            mejorMovimiento = str(x)+""+str(y)
+            mejorMovimiento = str(y)+""+str(x)
             mejorValor = valor
     return mejorMovimiento
     
@@ -150,9 +150,9 @@ def reversi():
 
         #turno = 1
         #estado = 2222222222222222222222222221022222201222222222222222222222222222
-
         if(turno != '' and estado != ''):
             estado = getEstado(estado)
+            print(getMovimientosValidos(estado, turno))
             respuesta = getMovimiento(estado, turno)
             return respuesta
         else:
