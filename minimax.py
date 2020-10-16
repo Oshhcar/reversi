@@ -2,6 +2,22 @@
 from flask import Flask, request
 import random
 
+def dibujarEstado(estado):
+    # This function prints out the board that it was passed. Returns None.
+    HLINE = '  +---+---+---+---+---+---+---+---+'
+    VLINE = '  |   |   |   |   |   |   |   |   |'
+
+    print('    1   2   3   4   5   6   7   8')
+    print(HLINE)
+    for y in range(8):
+        print(VLINE)
+        print(y+1, end=' ')
+        for x in range(8):
+            print('| %s' % (estado[x][y]), end=' ')
+        print('|')
+        print(VLINE)
+        print(HLINE)
+
 def getNuevoEstado():
     estado = []
     for i in range(8):
@@ -119,7 +135,7 @@ def getMovimiento(estado, turno):
 
     for x,y in posiblesMovimientos:
         if esEsquina(x,y):
-            return [x,y]
+            return str(y)+""+str(x)
     
     mejorValor = -1
 
@@ -152,8 +168,11 @@ def reversi():
         #estado = 2222222222222222222222222221022222201222222222222222222222222222
         if(turno != '' and estado != ''):
             estado = getEstado(estado)
-            print(getMovimientosValidos(estado, turno))
+            #dibujarEstado(estado)
+            #print(getMovimientosValidos(estado, turno))
             respuesta = getMovimiento(estado, turno)
+            #print(respuesta)
+            #respuesta = '00'
             return respuesta
         else:
             return '00'
