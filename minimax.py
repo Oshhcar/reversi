@@ -142,9 +142,16 @@ estado = 2222222222222222222222222221022222201222222222222222222222222222
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+@app.route('/', methods=['GET'])
+def reversi():
+    try:
+        turno = request.args.get('turno')
+        estado = request.args.get('estado')
+
+        if(turno != '' and estado != ''):
+            return 'hola ' + turno
+    except:
+        return 'Hello, World!'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
