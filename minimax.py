@@ -145,14 +145,20 @@ app = Flask(__name__)
 @app.route('/reversi', methods=['GET'])
 def reversi():
     try:
-        turno = request.args.get('turno')
-        estado = request.args.get('estado')
+        turno = int(request.args.get('turno'))
+        estado = int(request.args.get('estado'))
+
+        #turno = 1
+        #estado = 2222222222222222222222222221022222201222222222222222222222222222
 
         if(turno != '' and estado != ''):
             estado = getEstado(estado)
-            return 35
+            respuesta = getMovimiento(estado, turno)
+            return respuesta
+        else:
+            return '00'
     except:
-        return 'Hello, World!'
+        return '00'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
