@@ -162,13 +162,14 @@ app = Flask(__name__)
 def reversi():
     try:
         turno = int(request.args.get('turno'))
-        estado = int(request.args.get('estado'))
+        estado = request.args.get('estado')
 
         #turno = 1
         #estado = 2222222222222222222222222221022222201222222222222222222222222222
         if(turno != '' and estado != ''):
+            #print(estado)
             estado = getEstado(estado)
-            #dibujarEstado(estado)
+            dibujarEstado(estado)
             #print(getMovimientosValidos(estado, turno))
             respuesta = getMovimiento(estado, turno)
             #print(respuesta)
