@@ -1,6 +1,16 @@
 
 from flask import Flask, request
 import random
+import sys
+
+heuristica = [[120,-20,20,5,5,20,-20,120],
+[-20,-40,-5,-5,-5,-5,-40,-20],
+[20,-5,15,3,3,15,-5,20],
+[5,-5,3,3,3,3,-5,5],
+[5,-5,3,3,3,3,-5,5],
+[20,-5,15,3,3,15,-5,20],
+[-20,-40,-5,-5,-5,-5,-40,-20],
+[120,-20,20,5,5,20,-20,120]]
 
 def dibujarEstado(estado):
     # This function prints out the board that it was passed. Returns None.
@@ -130,55 +140,135 @@ def esEsquina(x, y):
 def getMovimiento(estado, turno):
 
     posiblesMovimientos = getMovimientosValidos(estado, turno)
+    random.shuffle(posiblesMovimientos)
 
+    for x,y in posiblesMovimientos:
+        if esEsquina(x,y):
+            return str(y)+""+str(x)
+        
+    mejorValor = -10000
+    mejorMovimiento = -1
+
+    for x,y in posiblesMovimientos:
+        copiaEstado = getCopiaEstado(estado)
+        hacerMovimiento(copiaEstado, turno, x, y)
+        valor = getValorEstado(estado, turno)*heuristica[x][y]
+        #valor = heuristica[x][y]
+        #valor = valorMin(copiaEstado, turno, x, y, 1)
+        if(valor > mejorValor):
+            mejorMovimiento = str(y)+""+str(x)
+            mejorValor = valor
+    return mejorMovimiento
+
+def getMovimientoMiniMax(estado, turno):
+
+    posiblesMovimientos = getMovimientosValidos(estado, turno)
     random.shuffle(posiblesMovimientos)
 
     for x,y in posiblesMovimientos:
         if esEsquina(x,y):
             return str(y)+""+str(x)
     
-    mejorValor = -1
+    if(turno == 1):
+        otroTurno = 0
+    else:
+        otroTurno = 1
+
+    mejorValor = -100000
+    mejorMovimiento = -1
+
+    print(posiblesMovimientos)
 
     for x,y in posiblesMovimientos:
+        print("getMovimientoMiniMax ",x,y,mejorMovimiento)
         copiaEstado = getCopiaEstado(estado)
         hacerMovimiento(copiaEstado, turno, x, y)
-        valor = getValorEstado(estado, turno)
+        #valor = getValorEstado(estado, turno)*heuristica[x][y]
+        #valor = heuristica[x][y]
+        valor = valorMin(copiaEstado, otroTurno, x, y, 3)
+        print(valor)
         if(valor > mejorValor):
             mejorMovimiento = str(y)+""+str(x)
             mejorValor = valor
     return mejorMovimiento
-    
+
+
+def valorMax(estado, turno, xAnt, yAnt, prof):
+    mejorValor = -10000
+
+    if(turno == 1):
+        otroTurno = 0
+    else:
+        otroTurno = 1
+
+    if prof <= 0:
+        return getValorEstado(estado, turno)*heuristica[xAnt][yAnt]
+    else :
+        posiblesMovimientos = getMovimientosValidos(estado, turno)
+        random.shuffle(posiblesMovimientos)
+        for x,y in posiblesMovimientos:
+            copiaEstado = getCopiaEstado(estado)
+            hacerMovimiento(copiaEstado, turno, x, y)
+            valor = valorMin(copiaEstado, otroTurno, x, y, prof-1)
+            if(valor > mejorValor):
+                mejorValor = valor
+        return mejorValor
+
+def valorMin(estado, turno, xAnt, yAnt, prof):
+    peorValor = 100000
+
+    if(turno == 1):
+        otroTurno = 0
+    else:
+        otroTurno = 1
+
+    if prof <= 0:
+        return getValorEstado(estado, turno)*heuristica[xAnt][yAnt]
+    else:
+        posiblesMovimientos = getMovimientosValidos(estado, turno)
+        random.shuffle(posiblesMovimientos)
+        for x,y in posiblesMovimientos:
+            #print("Min",x,y)
+            copiaEstado = getCopiaEstado(estado)
+            hacerMovimiento(copiaEstado, turno, x, y)
+            valor = valorMax(copiaEstado, otroTurno, x, y, prof-1)
+            if(valor < peorValor):
+                peorValor = valor
+        return peorValor
 
 #turno = 1
-#estado = 2222222222222222222222222221022222201222222222222222222222222222
-
+#estado = '2222222222222222222222222221022222201222222222222222222222222222'
+#estado = '0211112020111012110011111110111221100110121112102220122022001220'
 #estado = getEstado(estado)
 
 #print(getMovimiento(estado, turno))
+#print(getMovimientoMiniMax(estado, turno))
 
 app = Flask(__name__)
 
 @app.route('/reversi', methods=['GET'])
 def reversi():
-    try:
-        turno = int(request.args.get('turno'))
-        estado = request.args.get('estado')
-
-        #turno = 1
-        #estado = 2222222222222222222222222221022222201222222222222222222222222222
-        if(turno != '' and estado != ''):
+    turno = int(request.args.get('turno'))
+    estado = request.args.get('estado')
+    if(turno != None and estado != None):
+        try:
+            #turno = 1
+            #estado = 2222222222222222222222222221022222201222222222222222222222222222
             #print(estado)
             estado = getEstado(estado)
-            dibujarEstado(estado)
+            #dibujarEstado(estado)
             #print(getMovimientosValidos(estado, turno))
-            respuesta = getMovimiento(estado, turno)
+            respuesta = getMovimientoMiniMax(estado, turno)
             #print(respuesta)
             #respuesta = '00'
             return respuesta
-        else:
-            return '00'
-    except:
-        return '00'
+        
+        except Exception as e:
+            #e = sys.exc_info()[0]
+            #print(e.message)
+            return getMovimiento(estado, turno)
+    else:
+            return ''
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
