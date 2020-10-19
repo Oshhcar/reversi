@@ -175,6 +175,7 @@ def getMovimientoMiniMax(estado, turno):
         otroTurno = 1
 
     mejorValor = -100000
+    mejorValor2 = -1
     mejorMovimiento = -1
 
     print(posiblesMovimientos)
@@ -186,10 +187,13 @@ def getMovimientoMiniMax(estado, turno):
         #valor = getValorEstado(estado, turno)*heuristica[x][y]
         #valor = heuristica[x][y]
         valor = valorMin(copiaEstado, otroTurno, x, y, 3)
+        valor2 = getValorEstado(estado, turno)
         #print(valor)
-        if(valor > mejorValor):
+        if(valor > mejorValor or (valor == mejorValor and valor2 > mejorValor2)):
             mejorMovimiento = str(y)+""+str(x)
             mejorValor = valor
+            mejorValor2 = valor2
+
     return mejorMovimiento
 
 
@@ -258,13 +262,13 @@ def reversi():
             estado = getEstado(estado)
             #dibujarEstado(estado)
             #print(getMovimientosValidos(estado, turno))
-            #respuesta = getMovimientoMiniMax(estado, turno)
-            respuesta = getMovimiento(estado, turno)
+            respuesta = getMovimientoMiniMax(estado, turno)
+            #respuesta = getMovimiento(estado, turno)
             #print(respuesta)
             #respuesta = '00'
             return respuesta
         
-        except Exception as e:
+        except: #Exception as e:
             #e = sys.exc_info()[0]
             #print(e.message)
             return getMovimiento(estado, turno)
