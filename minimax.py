@@ -152,7 +152,7 @@ def getMovimiento(estado, turno):
     for x,y in posiblesMovimientos:
         copiaEstado = getCopiaEstado(estado)
         hacerMovimiento(copiaEstado, turno, x, y)
-        valor = getValorEstado(estado, turno)*heuristica[x][y]
+        valor = heuristica[x][y]#*getValorEstado(estado, turno)
         #valor = heuristica[x][y]
         #valor = valorMin(copiaEstado, turno, x, y, 1)
         if(valor > mejorValor):
@@ -202,7 +202,7 @@ def valorMax(estado, turno, xAnt, yAnt, prof):
         otroTurno = 1
 
     if prof <= 0:
-        return getValorEstado(estado, turno)*heuristica[xAnt][yAnt]
+        return heuristica[xAnt][yAnt]#*getValorEstado(estado, turno)
     else :
         posiblesMovimientos = getMovimientosValidos(estado, turno)
         random.shuffle(posiblesMovimientos)
@@ -223,7 +223,7 @@ def valorMin(estado, turno, xAnt, yAnt, prof):
         otroTurno = 1
 
     if prof <= 0:
-        return getValorEstado(estado, turno)*heuristica[xAnt][yAnt]
+        return heuristica[xAnt][yAnt]#*getValorEstado(estado, turno)
     else:
         posiblesMovimientos = getMovimientosValidos(estado, turno)
         random.shuffle(posiblesMovimientos)
