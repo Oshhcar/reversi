@@ -186,7 +186,7 @@ def getMovimientoMiniMax(estado, turno):
         hacerMovimiento(copiaEstado, turno, x, y)
         #valor = getValorEstado(estado, turno)*heuristica[x][y]
         #valor = heuristica[x][y]
-        valor = valorMin(copiaEstado, otroTurno, x, y, 3)
+        valor = valorMin(copiaEstado, turno, x, y, 3)
         valor2 = getValorEstado(estado, turno)
         #print(valor)
         if(valor > mejorValor or (valor == mejorValor and valor2 > mejorValor2)):
@@ -213,7 +213,7 @@ def valorMax(estado, turno, xAnt, yAnt, prof):
         for x,y in posiblesMovimientos:
             copiaEstado = getCopiaEstado(estado)
             hacerMovimiento(copiaEstado, turno, x, y)
-            valor = valorMin(copiaEstado, otroTurno, x, y, prof-1)
+            valor = valorMin(copiaEstado, turno, x, y, prof-1)
             if(valor > mejorValor):
                 mejorValor = valor
         return mejorValor
@@ -235,7 +235,7 @@ def valorMin(estado, turno, xAnt, yAnt, prof):
             #print("Min",x,y)
             copiaEstado = getCopiaEstado(estado)
             hacerMovimiento(copiaEstado, turno, x, y)
-            valor = valorMax(copiaEstado, otroTurno, x, y, prof-1)
+            valor = valorMax(copiaEstado, turno, x, y, prof-1)
             if(valor < peorValor):
                 peorValor = valor
         return peorValor
