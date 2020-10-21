@@ -249,6 +249,8 @@ def valorMin(estado, turno, xAnt, yAnt, prof):
 #print(getMovimientoMiniMax(estado, turno))
 
 app = Flask(__name__)
+turno = None
+estado = None
 
 @app.route('/reversi', methods=['GET'])
 def reversi():
