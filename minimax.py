@@ -262,8 +262,8 @@ def reversi():
             estado = getEstado(estado)
             #dibujarEstado(estado)
             #print(getMovimientosValidos(estado, turno))
-            respuesta = getMovimientoMiniMax(estado, turno)
-            #respuesta = getMovimiento(estado, turno)
+            #respuesta = getMovimientoMiniMax(estado, turno)
+            respuesta = getMovimiento(estado, turno)
             #print(respuesta)
             #respuesta = '00'
             return respuesta
