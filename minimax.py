@@ -12,22 +12,6 @@ heuristica = [[120,-20,20,5,5,20,-20,120],
 [-20,-40,-5,-5,-5,-5,-40,-20],
 [120,-20,20,5,5,20,-20,120]]
 
-def dibujarEstado(estado):
-    # This function prints out the board that it was passed. Returns None.
-    HLINE = '  +---+---+---+---+---+---+---+---+'
-    VLINE = '  |   |   |   |   |   |   |   |   |'
-
-    print('    1   2   3   4   5   6   7   8')
-    print(HLINE)
-    for y in range(8):
-        print(VLINE)
-        print(y+1, end=' ')
-        for x in range(8):
-            print('| %s' % (estado[x][y]), end=' ')
-        print('|')
-        print(VLINE)
-        print(HLINE)
-
 def getNuevoEstado():
     estado = []
     for i in range(8):
@@ -262,8 +246,8 @@ def reversi():
             estado = getEstado(estado)
             #dibujarEstado(estado)
             #print(getMovimientosValidos(estado, turno))
-            #respuesta = getMovimientoMiniMax(estado, turno)
-            respuesta = getMovimiento(estado, turno)
+            respuesta = getMovimientoMiniMax(estado, turno)
+            #respuesta = getMovimiento(estado, turno)
             #print(respuesta)
             #respuesta = '00'
             return respuesta
